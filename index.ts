@@ -10,11 +10,16 @@ const port = process.env.PORT || 8000
 
 // The first route
 app.get('/', (req:Request, res:Response) => {
-  res.send('Comensando nuevo cuerso de Full Stack')
+  res.status(200).json({ data: { message: 'Goodbye world' } })
 })
 
 app.get('/hello', (req:Request, res:Response) => {
-  res.send('Hello my friends')
+  const { name } = req.query
+
+  if (name) {
+    return res.status(200).json({ data: { message: `Hola, ${name}` } })
+  }
+  return res.status(200).json({ data: { message: 'Hola, anonimo' } })
 })
 
 // Execute App and listen Request to  port
