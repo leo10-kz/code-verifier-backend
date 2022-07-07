@@ -14,6 +14,9 @@ const server:Express = express()
 //* Defino mi server para que use /api y que use todas las rutas de router
 server.use('/api', router)
 
+//* Server estatico
+server.use(express.static('public'))
+
 // TODO: mongoose conccion
 
 //* Configuracion de seguridad
