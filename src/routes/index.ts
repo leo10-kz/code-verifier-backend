@@ -1,5 +1,6 @@
 import express, { Request, Response } from 'express'
 import { logInfo } from '../utils/logger'
+import authRouter from './AuthRouter'
 import helloRouter from './HelloRouter'
 import userRouter from './UserRouter'
 
@@ -19,5 +20,6 @@ rootRouter.get('/', (req:Request, res:Response) => {
 server.use('/', rootRouter) // http://localhost:8000/api/
 server.use('/hello', helloRouter) // http://localhost:8000/api/hello
 server.use('/users', userRouter) // http://localhost:8000/api/users
+server.use('/auth', authRouter) // http://localhost:8000/api/auth
 
 export default server

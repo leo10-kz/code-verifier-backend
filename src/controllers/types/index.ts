@@ -7,3 +7,8 @@ export type ErrorResponse = {
     error: string;
     message: string;
 }
+
+export type AuthResponse = {
+  token: string;
+  message: string;
+}

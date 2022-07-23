@@ -1,7 +1,7 @@
-import { Delete, Get, Post, Put, Query, Route, Tags } from 'tsoa'
+import { Delete, Get, Put, Query, Route, Tags } from 'tsoa'
 import { IUsersController } from './interfaces'
 import { logSuccess, logWarning } from '../utils/logger'
-import { getAllUsers, getUserById, deleteUserById, createUser, updateUser } from '../domain/orm/User.orm'
+import { getAllUsers, getUserById, deleteUserById, updateUser } from '../domain/orm/User.orm'
 
 @Route('/api/users')
 @Tags('UserController')
@@ -32,7 +32,6 @@ export class UserController implements IUsersController {
 * @param {string} id Id para identificar el usuario
 * @returns Devolvera un mensaje si el Usuario se borro correctamente
 */
-
 @Delete('/')
 public async deleteUserById (@Query() id?: string): Promise<any> {
   let response: any = ''
@@ -47,23 +46,10 @@ public async deleteUserById (@Query() id?: string): Promise<any> {
   } else {
     logWarning('[api/usesr]:  Delete User Request WITHOUT ID ')
     response = {
-      message: 'Please, provide an ID to remove user for   database'
+      message: 'Please, provide an ID to remove user for database'
     }
   }
 
-  return response
-}
-
-@Post('/')
-public async createUser (user: any): Promise<any> {
-  let response: any = ''
-
-  await createUser(user).then(r => {
-    logSuccess(`[api/usesr]: User: ${user}`)
-    response = {
-      message: `User created : ${user.name}`
-    }
-  })
   return response
 }
 
