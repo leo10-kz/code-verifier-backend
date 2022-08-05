@@ -1,6 +1,7 @@
 import express, { Request, Response } from 'express'
 import { UserController } from '../controllers/UserController'
 import { logInfo } from '../utils/logger'
+import { verifyToken } from '../middlewares/verify.middleware'
 
 const userRouter = express.Router()
 
@@ -8,15 +9,18 @@ userRouter.route('/')
   //* GET
   .get(async (req:Request, res:Response) => {
     const id: any = req?.query?.id
+    const limit: any = req?.query?.limit || 10
+    const page: any = req?.query?.page || 1
+
     logInfo(`Query params: ${id}`)
     const controller: UserController = new UserController()
 
-    const response = await controller.getUsers(id)
+    const response = await controller.getUsers(limit, page, id)
     return res.status(200).send(response)
   })
 
   //* DELETE
-  .delete(async (req: Request, res: Response) => {
+  .delete(verifyToken, async (req: Request, res: Response) => {
     const id: any = req?.query?.id
     logInfo(`Query params: ${id}`)
     const controller: UserController = new UserController()
@@ -26,7 +30,7 @@ userRouter.route('/')
   })
 
   //* PUT
-  .put(async (req: Request, res:Response) => {
+  .put(verifyToken, async (req: Request, res:Response) => {
     const id: any = req?.query?.id
     const name: any = req?.query?.name
     const email: any = req?.query?.email
@@ -45,6 +49,19 @@ userRouter.route('/')
     res.status(200).send(response)
   })
 
+userRouter.route('/katas')
+//* GET/katas
+  .get(verifyToken, async (req: Request, res: Response) => {
+    const id: any = req?.query?.id
+    const limit: any = req?.query?.limit || 10
+    const page: any = req?.query?.page || 1
+
+    logInfo(`Query params: ${id}`)
+    const controller: UserController = new UserController()
+
+    const response = await controller.getKatas(limit, page, id)
+    return res.status(200).send(response)
+  })
 export default userRouter
 
 /**

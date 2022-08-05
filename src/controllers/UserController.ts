@@ -1,7 +1,7 @@
 import { Delete, Get, Put, Query, Route, Tags } from 'tsoa'
 import { IUsersController } from './interfaces'
 import { logSuccess, logWarning } from '../utils/logger'
-import { getAllUsers, getUserById, deleteUserById, updateUser } from '../domain/orm/User.orm'
+import { getAllUsers, getUserById, deleteUserById, updateUser, getKatasFromUser } from '../domain/orm/User.orm'
 
 @Route('/api/users')
 @Tags('UserController')
@@ -13,7 +13,7 @@ export class UserController implements IUsersController {
 */
 
 @Get('/')
-  public async getUsers (@Query() id?: string): Promise<any> {
+  public async getUsers (@Query() limit: number, @Query() page: number, @Query() id?: string): Promise<any> {
     let response: any = ''
 
     if (id) {
@@ -21,7 +21,7 @@ export class UserController implements IUsersController {
       response = await getUserById(id)
     } else {
       logSuccess('[api/usesr]: Get all users ')
-      response = await getAllUsers()
+      response = await getAllUsers(limit, page)
     }
 
     return response
@@ -57,7 +57,7 @@ public async deleteUserById (@Query() id?: string): Promise<any> {
 public async updateUser (user: any, @Query()id?: string) {
   let response: any = ''
   if (id) {
-    logSuccess(`[api/usesr]: Delete User by ID: ${id}`)
+    logSuccess(`[api/usesr]: Update User by ID: ${id}`)
     await updateUser(user, id).then(r => {
       response = {
         message: `User with ID:${id} updated successfully `
@@ -67,6 +67,23 @@ public async updateUser (user: any, @Query()id?: string) {
     logWarning('[api/usesr]:  Update User Request WITHOUT ID ')
     response = {
       message: 'Please, provide an ID to update an existing user'
+    }
+  }
+
+  return response
+}
+
+@Get('/katas')
+public async getKatas (@Query() limit: number, @Query() page: number, @Query() id?: string): Promise<any> {
+  let response: any = ''
+
+  if (id) {
+    logSuccess(`[api/usesr/katas]: Get user by ID: ${id} `)
+    response = await getKatasFromUser(limit, page, id)
+  } else {
+    logSuccess('[api/usesr/katas]: Get all katas from user ')
+    response = {
+      message: 'Please, provide an ID '
     }
   }
 

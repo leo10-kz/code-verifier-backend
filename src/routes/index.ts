@@ -3,6 +3,7 @@ import { logInfo } from '../utils/logger'
 import authRouter from './AuthRouter'
 import helloRouter from './HelloRouter'
 import userRouter from './UserRouter'
+import kataRouter from './KataRouter'
 
 // Creo una instancia del server con express
 const server = express()
@@ -21,5 +22,6 @@ server.use('/', rootRouter) // http://localhost:8000/api/
 server.use('/hello', helloRouter) // http://localhost:8000/api/hello
 server.use('/users', userRouter) // http://localhost:8000/api/users
 server.use('/auth', authRouter) // http://localhost:8000/api/auth
+server.use('/katas', kataRouter) // http://localhost:8000/api/katas
 
 export default server
